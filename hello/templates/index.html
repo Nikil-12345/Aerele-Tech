@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Namma Kadai</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+.header {
+  background-color: #ff9900;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.section {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+/* Gentle Orange Color Scheme */
+.header {
+  background-color: #ffa726;
+}
+
+.container {
+  background-color: #fff3e0;
+}
+
+.section {
+  background-color: #ffcc80;
+  color: #333;
+}
+
+.item {
+  background-color: #ff7043;
+  color: #fff;
+  border: 1px solid #e65100;
+}
+
+.form-group label {
+  color: #e65100;
+  font-weight: bold;
+}
+
+.form-group select,
+.form-group input[type="number"] {
+  border: 1px solid #ff9800;
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+button[type="button"] {
+  background-color: #ff5722;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+button[type="button"]:hover {
+  background-color: #e64a19;
+}
+
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>Welcome to Namma Kadai</h1>
+    <p>Your One-Stop Shop for Office Supplies</p>
+  </div>
+  <div class="container">
+    <div class="section">
+      <h2>Items</h2>
+      <div class="item">
+        <span>Pen</span>
+        <span>Rs. 10 each</span>
+      </div>
+      <div class="item">
+        <span>Pencil</span>
+        <span>Rs. 7 each</span>
+      </div>
+      <div class="item">
+        <span>Eraser</span>
+        <span>Rs. 1 each</span>
+      </div>
+      <div class="item">
+        <span>Sharpener</span>
+        <span>Rs. 2 each</span>
+      </div>
+      <div class="item">
+        <span>Geometry box</span>
+        <span>Rs. 10 each</span>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Transactions</h2>
+      <form id="buyForm">
+        <div class="form-group">
+          <label for="buyItem">Select Item:</label>
+          <select id="buyItem" name="buyItem">
+            <option value="pen">Pen</option>
+            <option value="pencil">Pencil</option>
+            <option value="eraser">Eraser</option>
+            <option value="sharpener">Sharpener</option>
+            <option value="geometry">Geometry box</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="buyQuantity">Quantity:</label>
+          <input type="number" id="buyQuantity" name="buyQuantity" min="1" value="1">
+        </div>
+        <button type="button" id="buyButton">Sell</button>
+      </form>
+      <form id="sellForm">
+        <div class="form-group">
+          <label for="sellItem">Select Item:</label>
+          <select id="sellItem" name="sellItem">
+            <option value="pen">Pen</option>
+            <option value="pencil">Pencil</option>
+            <option value="eraser">Eraser</option>
+            <option value="sharpener">Sharpener</option>
+            <option value="geometry">Geometry box</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sellQuantity">Quantity:</label>
+          <input type="number" id="sellQuantity" name="sellQuantity" min="1" value="1">
+        </div>
+        <button type="button" id="sellButton">Buy</button>
+      </form>
+    </div>
+    <div class="section">
+      <h2>Cash Balance: Rs. <span id="totalRate">1000</span></h2>
+    </div>
+  </div> 
+  <script>
+    const totalRateElement = document.getElementById('totalRate');
+    const itemPriceMap = {
+      pen: 10,
+      pencil: 7,
+      eraser: 1,
+      sharpener: 2,
+      geometry: 10
+    };
+    let totalRate = 1000;
+
+    function updateTotalRate() {
+      totalRateElement.textContent = totalRate;
+    }
+
+    const buyForm = document.getElementById('buyForm');
+    const sellForm = document.getElementById('sellForm');
+
+    function processTransaction(form, isBuy) {
+      const selectedItem = form.querySelector('select').value;
+      const quantity = parseInt(form.querySelector('input').value, 10);
+
+      if (itemPriceMap[selectedItem] && quantity > 0) {
+        const itemPrice = isBuy ? itemPriceMap[selectedItem] : -itemPriceMap[selectedItem];
+        totalRate += itemPrice * quantity;
+        updateTotalRate();
+      }
+    }
+
+    document.getElementById('buyButton').addEventListener('click', () => {
+      processTransaction(buyForm, true);
+    });
+
+    document.getElementById('sellButton').addEventListener('click', () => {
+      processTransaction(sellForm, false);
+    });
+
+    updateTotalRate();
+  </script>
+</body>
+</html>
